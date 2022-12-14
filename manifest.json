@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+  
+    "name": "Jackie Dev Tools",
+    "version": "0.1",
+  
+    "description": "Jackie's test dev tool",
+    "author": "Jackie",
+  
+    "devtools_page": "/html/devtools.html",
+
+    "background": {
+      "service_worker": "/js/background.js"
+    },
+    "content_scripts": [{
+      "matches": [ "<all_urls>" ],
+      "js": ["/js/contentScript.js"]
+    }],
+
+    "permissions": ["storage", "tabs", "activeTab", "scripting"],
+    "host_permissions": ["<all_urls>"]
+
+  }
