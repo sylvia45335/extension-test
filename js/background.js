@@ -1,6 +1,4 @@
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('hello Jackie');
-});
+let backgroundPort;
 
 async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -9,10 +7,16 @@ async function getCurrentTab() {
   return tab;
 }
 
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+  if (backgroundPort) {
+    backgroundPort.postMessage({ body: req.body });
+  }
+});
+
 chrome.runtime.onConnect.addListener((port) => {
-  const tab = getCurrentTab();
-  console.log(tab);
-  let backgroundPort = port;
+  //   const tab = getCurrentTab();
+  //   console.log(tab);
+  backgroundPort = port;
 
   backgroundPort.onMessage.addListener((message, sender, sendResponse) => {
     console.log(message);
@@ -22,7 +26,6 @@ chrome.runtime.onConnect.addListener((port) => {
     //   files: ['/js/contentScript.js'],
     // });
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      console.log(tab);
       //   chrome.scripting.executeScript({
       //     target: { tabId: tabs[0].id },
       //     files: ['/js/contentScript.js'],

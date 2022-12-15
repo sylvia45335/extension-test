@@ -1,11 +1,12 @@
-// window.addEventListener('message', (event) => {
-//   console.log(event);
-// });
+window.addEventListener('message', (event) => {
+  chrome.runtime.sendMessage(event.data);
+});
 
-// chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-//   console.log(req);
-//   console.log(req.body);
-//   document.querySelector('body').style.backgroundColor = req.body;
-// });
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+  alert('hello from content script');
+  window.postMessage({
+    body: { color: document.querySelector('body').style.backgroundColor },
+  });
+});
 
 // document.querySelector('body').style.backgroundColor = 'blue';

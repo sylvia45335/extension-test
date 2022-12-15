@@ -1,11 +1,24 @@
 // const handleClick = () => {
 //   document.querySelector('body').style.backgroundColor = 'blue';
 // };
+let port;
+
+function newColor(color) {
+  const newButton = document.createElement('button');
+  newButton.innerText = color;
+  document.querySelector('body').appendChild(newButton);
+}
 
 const connectPort = () => {
-  let port = chrome.runtime.connect();
+  port = chrome.runtime.connect();
   port.postMessage({
     body: 'pink',
+  });
+
+  port.onMessage.addListener((message, sender, sendResponse) => {
+    console.log(message.body.color);
+    alert(message.body.color);
+    newColor(message.body.color);
   });
 };
 
